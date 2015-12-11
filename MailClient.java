@@ -11,6 +11,8 @@ public class MailClient
     private MailServer server;
     // The user running this client.
     private String user;
+    // Es spam
+    private boolean spam;
 
     /**
      * Create a mail client run by user and attached to the given server.
@@ -26,7 +28,23 @@ public class MailClient
      */
     public MailItem getNextMailItem()
     {
-        return server.getNextMailItem(user);
+        MailItem item = server.getNextMailItem(user);
+        if (item == null){
+            spam = false;
+            return item;
+        }
+        else if(item.getMessage().contains("trabajo")){
+            spam = false;
+            return item;
+        }
+        else if((item.getMessage().contains("promocion"))||(item.getMessage().contains("regalo"))) {
+            spam = true;
+            return null;
+        }
+        else {
+            spam = false;
+            return item;
+        }
     }
 
     /**
@@ -37,22 +55,51 @@ public class MailClient
     {
         MailItem item = server.getNextMailItem(user);
         if(item == null) {
-            System.out.println("No new mail.");
+            if (spam == true){
+                System.out.println("Se ha recibido spam");
+            }
+            else{
+                System.out.println("No new mail.");
+            }
         }
-        else {
+        else{
             item.print();
+            }
         }
-    }
-
+        
     /**
      * Send the given message to the given recipient via
      * the attached mail server.
      * @param to The intended recipient.
      * @param message The text of the message to be sent.
      */
-    public void sendMailItem(String to, String message)
+    public void sendMailItem(String to, String subject, String message)
     {
-        MailItem item = new MailItem(user, to, message);
+        MailItem item = new MailItem(user, to, subject, message);
         server.post(item);
+    }
+
+    /**
+     * A method call getNextMailItemAndAutorespond that recover of the server the next mail and return other different ("No estoy en la oficina"),
+     * the same message has  the prefix "Re" too.
+     */
+    public void getNexMailItemAndAutorespond()
+    {
+        MailItem item = server.getNextMailItem (user);
+
+        if (item == null)
+        {
+            System.out.println("No new mail.");
+        }
+        
+        else
+        {   
+            // \n salta a una nueva línea
+            // \t introduce un tabulador
+
+            sendMailItem (item.getFrom(),"Re"  + item.getSubject(),"No estoy en la oficina.\n\t" + item.getMessage() );
+
+        }
+
     }
 }

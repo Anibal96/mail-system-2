@@ -1,3 +1,4 @@
+
 /**
  * A class to model a simple mail item. The item has sender and recipient
  * addresses and a message string.
@@ -7,29 +8,39 @@
  */
 public class MailItem
 {
-    // The sender of the item.
+    // Emisor del mensaje.
     private String from;
-    // The intended recipient.
+    // Destinatario del mensaje.
     private String to;
-    // The text of the message.
-    private String message;
+    // Mensaje enviado.
+    private String menssage;
+    //Asunto del mensaje
+    private String subject;
 
     /**
-     * Create a mail item from sender to the given recipient,
-     * containing the given message.
-     * @param from The sender of this item.
-     * @param to The intended recipient of this item.
-     * @param message The text of the message to be sent.
+     * Constructor que asigna los valores a de, a y al mensaje.
      */
-    public MailItem(String from, String to, String message)
+    public MailItem(String from, String to, String subject, String menssage)
     {
         this.from = from;
         this.to = to;
-        this.message = message;
+        this.subject = subject;
+        this.menssage = menssage;
     }
 
     /**
-     * @return The sender of this message.
+     * Metodo que imprime el mensaje mostrando tambien el emisor y el destinatario.
+     */
+    public void print()
+    {
+        System.out.println("De: " + from);
+        System.out.println("A: " + to);
+        System.out.println("Asunto: " + subject);
+        System.out.println("Mesaje: " + menssage);
+    }
+    
+    /**
+     * Metodo que devuelve el emisor.
      */
     public String getFrom()
     {
@@ -37,7 +48,7 @@ public class MailItem
     }
 
     /**
-     * @return The intended recipient of this message.
+     * Metodo que devuelve el destinatario.
      */
     public String getTo()
     {
@@ -45,20 +56,17 @@ public class MailItem
     }
 
     /**
-     * @return The text of the message.
+     * Metodo que devuelve un mensaje.
      */
     public String getMessage()
     {
-        return message;
+        return menssage;
     }
-
     /**
-     * Print this mail message to the text terminal.
+     * Metodo que devuelve un asunto.
      */
-    public void print()
+    public String getSubject()
     {
-        System.out.println("From: " + from);
-        System.out.println("To: " + to);
-        System.out.println("Message: " + message);
+        return subject;
     }
 }
