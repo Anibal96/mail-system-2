@@ -39,6 +39,7 @@ public class MailClient
         }
         else if((item.getMessage().contains("promocion"))||(item.getMessage().contains("regalo"))) {
             spam = true;
+            item = null;
             return null;
         }
         else {
